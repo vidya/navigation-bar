@@ -5,8 +5,8 @@ Navigation bar for choosing from a menu of items
 
 Please use the following procedure
 
-### git clone the repository
-### do an 'npm install'
-### run 'yarn start'
+* git clone the repository
+* do an 'npm install'
+* run 'yarn start'
 
 
