@@ -4,10 +4,10 @@ import './NavigationBar.scss';
 
 import data from "../Data/navigation.json";
 
-function City({ cityClass, cityClick, label }) {
+function City({ cityClass, section, label }) {
     return (
         <span>
-            <a className={cityClass} onClick={cityClick}> {label} </a>
+            <a className={cityClass} data-section={section}> {label} </a>
         </span>
     )
 }
@@ -21,16 +21,17 @@ export class NavigationBar extends React.Component {
         super(props)
 
         this.state = {
-            cities: [],
+            cities: {},
+            selectedSection: '',
         }
 
         this.cityClick = this.cityClick.bind(this)
     }
 
     componentDidMount() {
-        const cities = data['cities']
+        const cityList = data['cities']
 
-        // cities:
+        // cityList:
         //
         //     [
         //         {
@@ -40,40 +41,57 @@ export class NavigationBar extends React.Component {
         //         ...
         //     ]
 
-        cities.forEach(c => c.cityClass = 'city')
+        const cities = {}
+
+        cityList.forEach(({ section, label }) => {
+            cities[section] = {
+                section,
+                label,
+                cityClass: 'city',
+            }
+        })
 
         this.setState({ cities })
     }
 
-    cityClick(event) {
+    cityClick({ target: {dataset: { section }} }) {
+        if ((typeof section === "undefined") || (section === null)) {
+            return
+        }
+
         const { cities } = this.state
+        let selectedSection  = this.state.selectedSection
 
-        const clickedCity = event.currentTarget.innerHTML.trim()
+        if (selectedSection !== '') {
+            cities[selectedSection].cityClass = 'city'
+        }
 
-        cities.forEach(c => c.cityClass = (c.label == clickedCity) ? 'selectedCity' : 'city')
+        selectedSection = section
+        cities[selectedSection].cityClass = 'selectedCity'
 
-        this.setState({ cities })
+        this.setState({
+            cities,
+            selectedSection
+        })
     }
 
     render() {
         const { cities } = this.state
-        const cityClick = this.cityClick
 
-        const listItems = cities.map(({ section, label, cityClass }, n) => (
+        const listItems = Object.values(cities).map(({ section, label, cityClass }, n) => (
             <li key={n}>
                 <City
                     section={section}
                     label={label}
 
                     cityClass={cityClass}
-                    cityClick={cityClick}
                 />
             </li>
         ))
 
         return (
             <div>
-                <ul>
+                <ul onClick={this.cityClick}>
                     { listItems }
                 </ul>
 

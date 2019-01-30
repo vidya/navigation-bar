@@ -1,3 +1,8 @@
+
+div {
+  text-align: center;
+}
+
 hr {
   width: 98%;
 
@@ -11,7 +16,7 @@ ul {
 
   li {
     display: inline;
-    padding: 20px 15px 0px 15px;
+    padding: 20px 10px 0px 10px;
 
     a.city {
       padding-bottom: 2px;
@@ -23,6 +28,14 @@ ul {
       padding-bottom: 2px;
       text-decoration: none;
       border-bottom: 2px solid black;
+    }
+
+    li:first-child {
+      padding: 20px 10px 0px 0px;
+    }
+
+    li:last-child {
+      padding: 20px 0px 0px 10px;
     }
   }
 }
